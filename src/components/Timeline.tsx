@@ -5,6 +5,7 @@ import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
 import updatelocal from "dayjs/plugin/updateLocale";
 import { useEffect, useState } from "react";
+import { AiFillHeart } from "react-icons/ai";
 
 dayjs.extend(relativeTime);
 dayjs.extend(updatelocal);
@@ -60,16 +61,21 @@ function Tweet({
 }: {
   tweet: RouterOutputs["tweet"]["timeline"]["tweets"][number];
 }) {
+  const likeMutation = api.tweet.like.useMutation().mutateAsync;
+  const unlikeMutation = api.tweet.unlike.useMutation().mutateAsync;
+
+  const hasLiked = tweet.likes.length > 0;
+
   return (
-    <div className="border-b-2 border-gray-500">
-      <div className="flex p-5">
+    <div className="border-b-2 border-gray-500 p-3">
+      <div className="flex">
         {tweet.author.image && (
           <Image
             src={tweet.author.image}
             alt={`${tweet.author.name} profile picture`}
             width={48}
             height={48}
-            className="rounded-full "
+            className="max-h-12 rounded-full"
           />
         )}
         <div className="ml-3">
@@ -82,6 +88,20 @@ function Tweet({
 
           <div>{tweet.content}</div>
         </div>
+      </div>
+      <div className="mt-4 flex">
+        <AiFillHeart
+          color={hasLiked ? "red" : "gray"}
+          size="1.5rem"
+          onClick={() => {
+            if (hasLiked) {
+              unlikeMutation({ tweetId: tweet.id });
+            } else {
+              likeMutation({ tweetId: tweet.id });
+            }
+          }}
+        />
+        <span className="text-center text-sm">{10}</span>
       </div>
     </div>
   );

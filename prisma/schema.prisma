@@ -47,21 +47,39 @@ model User {
     email         String?   @unique
     emailVerified DateTime?
     image         String?
+    likes         Like[]
     accounts      Account[]
     sessions      Session[]
-    tweets Tweet[]
+    tweets        Tweet[]
 }
 
-model Tweet{
+model Tweet {
     id String @id @default(cuid())
 
     content String
 
-    author User @relation(fields: [authorId], references: [id])
-    authorId String 
-    
+    likes Like[]
+
+    author   User   @relation(fields: [authorId], references: [id])
+    authorId String
+
     createdAt DateTime @default(now())
     updatedAt DateTime @updatedAt
+}
+
+model Like {
+    id String @id @default(cuid())
+
+    tweet   Tweet  @relation(fields: [tweetId], references: [id])
+    tweetId String
+
+    user   User   @relation(fields: [userId], references: [id])
+    userId String
+
+    createAt DateTime @default(now())
+    updateAt DateTime @updatedAt
+
+    @@unique([tweetId, userId])
 }
 
 model VerificationToken {
