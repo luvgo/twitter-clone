@@ -40,9 +40,12 @@ export function CreateTweet() {
         <textarea
           onChange={(e) => setContent(e.target.value)}
           className="w-full p-4 shadow"
-        ></textarea>
+        />
         <div className="mt-4 flex justify-end">
-          <button type="submit" className="bg-primary px-4 py-2 text-white">
+          <button
+            type="submit"
+            className="rounded-md bg-primary px-4 py-2 text-white"
+          >
             Tweet
           </button>
         </div>
