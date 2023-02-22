@@ -4,7 +4,6 @@ import Head from "next/head";
 import { Timeline } from "../components/Timeline";
 
 const Home: NextPage = () => {
-
   return (
     <>
       <Head>
@@ -14,7 +13,7 @@ const Home: NextPage = () => {
       </Head>
       <main>
         <div>
-          <Timeline/>
+          <Timeline />
         </div>
       </main>
     </>

@@ -13,17 +13,21 @@ export const tweetSchema = z.object({
 
 export function CreateTweet() {
   const [content, setContent] = useState("");
-  const [error, setError] = useState("");
+  const utils = api.useContext();
 
-  const { mutateAsync } = api.tweet.create.useMutation();
+  const { mutateAsync } = api.tweet.create.useMutation({
+    onSuccess: () => {
+      setContent("");
+      utils.tweet.timeline.invalidate();
+    },
+  });
 
   async function handleSubmit(e) {
     e.preventDefault();
 
     try {
       await tweetSchema.parse({ content });
-    } catch (error) {
-      setError(err);
+    } catch (err) {
       return;
     }
 
@@ -32,7 +36,6 @@ export function CreateTweet() {
 
   return (
     <>
-      {error && JSON.stringify(error)}
       <form
         onSubmit={handleSubmit}
         className="flex w-full flex-col rounded-md border-2 p-4"
@@ -40,6 +43,7 @@ export function CreateTweet() {
         <textarea
           onChange={(e) => setContent(e.target.value)}
           className="w-full p-4 shadow"
+          placeholder="Input Tweet"
         />
         <div className="mt-4 flex justify-end">
           <button
