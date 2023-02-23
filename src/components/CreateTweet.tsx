@@ -15,23 +15,22 @@ export function CreateTweet() {
   const [content, setContent] = useState("");
   const utils = api.useContext();
 
-  const { mutateAsync } = api.tweet.create.useMutation({
-    onSuccess: () => {
-      setContent("");
-      utils.tweet.timeline.invalidate();
-    },
-  });
-
-  async function handleSubmit(e: FormEvent<HTMLFormElement>) {
+  function handleSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
 
     try {
-      await tweetSchema.parse({ content });
+      tweetSchema.parse({ content });
+      api.tweet.create.useMutation({
+        onSuccess: () => {
+          setContent("");
+          utils.tweet.timeline
+            .invalidate()
+            .catch((error) => console.error(error));
+        },
+      });
     } catch (err) {
       return;
     }
-
-    mutateAsync({ content });
   }
 
   return (

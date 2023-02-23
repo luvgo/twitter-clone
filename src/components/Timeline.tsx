@@ -132,6 +132,8 @@ function Tweet({
     },
   }).mutateAsync;
 
+  const [isDisabled, setDisabled] = useState(false);
+
   const hasLiked = tweet.likes.length > 0;
 
   return (
@@ -163,12 +165,15 @@ function Tweet({
         <AiFillHeart
           color={hasLiked ? "red" : "gray"}
           size="1.5rem"
-          onClick={() => {
+          className={isDisabled ? "pointer-events-none" : ""}
+          onClick={async () => {
+            setDisabled(true);
             if (hasLiked) {
-              unlikeMutation({ tweetId: tweet.id });
+              await unlikeMutation({ tweetId: tweet.id });
             } else {
-              likeMutation({ tweetId: tweet.id });
+              await likeMutation({ tweetId: tweet.id });
             }
+            setDisabled(false);
           }}
         />
         <span className="text-center text-sm">{tweet._count.likes}</span>
