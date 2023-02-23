@@ -1,4 +1,4 @@
-import { ChangeEvent, ErrorInfo, useState } from "react";
+import { FormEvent, useState } from "react";
 import { z } from "zod";
 import { api } from "../utils/api";
 
@@ -22,7 +22,7 @@ export function CreateTweet() {
     },
   });
 
-  async function handleSubmit(e) {
+  async function handleSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
 
     try {

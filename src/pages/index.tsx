@@ -13,7 +13,7 @@ const Home: NextPage = () => {
       </Head>
       <main>
         <div>
-          <Timeline />
+          <Timeline where={undefined} />
         </div>
       </main>
     </>

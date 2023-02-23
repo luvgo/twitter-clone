@@ -1,4 +1,4 @@
-import { api, RouterInputs, RouterOutputs } from "../utils/api";
+import { api, type RouterInputs, type RouterOutputs } from "../utils/api";
 import { CreateTweet } from "./CreateTweet";
 import Image from "next/image";
 import dayjs from "dayjs";
@@ -78,7 +78,7 @@ function updateCache({
   input: RouterInputs["tweet"]["timeline"];
 }) {
   client.setQueryData(
-    [["tweet", "timeline"], { input: { where: {} }, type: "infinite" }],
+    [["tweet", "timeline"], { input, type: "infinite" }],
     (oldData) => {
       const newData = oldData as InfiniteData<
         RouterOutputs["tweet"]["timeline"]
@@ -187,6 +187,7 @@ export function Timeline({
   const { data, hasNextPage, fetchNextPage, isFetching } =
     api.tweet.timeline.useInfiniteQuery(
       {
+        limit: LIMIT,
         where,
       },
       {
